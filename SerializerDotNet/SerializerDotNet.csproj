@@ -2,6 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Authors>Rush Frisby</Authors>
+    <Company>Rush Frisby</Company>
+    <Description>A pack of serializers implemented using a standard interface</Description>
+    <PackageLicenseUrl>https://github.com/rushfrisby/SerializerDotNet/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/rushfrisby/SerializerDotNet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/rushfrisby/SerializerDotNet</RepositoryUrl>
+    <RepositoryType>C#</RepositoryType>
+    <PackageTags>ISerializer Serializer Serialization JSON Protobuf</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
