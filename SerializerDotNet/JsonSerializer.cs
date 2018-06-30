@@ -1,27 +1,28 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.IO;
+using System.Text;
 
-namespace Serializer.NET
+namespace SerializerDotNet
 {
-	public class ProtobufSerializer : ISerializer
+	public class JsonSerializer : ISerializer
 	{
+		public string DefaultContentType { get { return ContentType.Json; } }
+
 		public void Serialize<T>(T instance, Stream destination)
 		{
-			ProtoBuf.Serializer.Serialize(destination, instance);
+			var data = Serialize(instance);
+			destination.Write(data, 0, data.Length);
 		}
 
 		public async Task SerializeAsync<T>(T instance, Stream destination)
 		{
-			await Task.Factory.StartNew(() => ProtoBuf.Serializer.Serialize(destination, instance));
+			await Task.Factory.StartNew(() => Serialize(instance, destination));
 		}
 
 		public byte[] Serialize<T>(T instance)
 		{
-			using (var ms = new MemoryStream())
-			{
-				Serialize(instance, ms);
-				return ms.ToArray();
-			}
+			return Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(instance));
 		}
 
 		public async Task<byte[]> SerializeAsync<T>(T instance)
@@ -31,12 +32,15 @@ namespace Serializer.NET
 
 		public T Deserialize<T>(Stream source)
 		{
-			return ProtoBuf.Serializer.Deserialize<T>(source);
+			using (var r = new StreamReader(source, Encoding.UTF8))
+			{
+				return JsonConvert.DeserializeObject<T>(r.ReadToEnd());
+			}
 		}
 
 		public async Task<T> DeserializeAsync<T>(Stream source)
 		{
-			return await Task.Factory.StartNew(() => ProtoBuf.Serializer.Deserialize<T>(source));
+			return await Task.Factory.StartNew(() => Deserialize<T>(source));
 		}
 
 		public T Deserialize<T>(byte[] source)
