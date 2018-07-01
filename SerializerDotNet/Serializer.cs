@@ -5,32 +5,36 @@ namespace SerializerDotNet
 {
 	public class Serializer
 	{
-		private static IDictionary<string, ISerializer> _maps = GetDefaultMappings();
+		private static Lazy<IDictionary<string, ISerializer>> _maps = new Lazy<IDictionary<string, ISerializer>>(() => GetDefaultMappings());
 
-		private static readonly IDictionary<string, ISerializer> _defaultMaps = new Dictionary<string, ISerializer>()
-		{
-			{ ContentType.Json, new JsonSerializer() },
-			{ ContentType.Protobuf, new ProtobufSerializer() },
-			{ ContentType.XProtobuf, new ProtobufSerializer() },
-		};
+		private static IDictionary<string, ISerializer> Maps { get { return _maps.Value; } }
 
 		public static IDictionary<string, ISerializer> GetDefaultMappings()
 		{
-			return _defaultMaps;
+			return new Dictionary<string, ISerializer>()
+			{
+				{ ContentType.Json, new JsonSerializer() },
+				{ ContentType.Protobuf, new ProtobufSerializer() },
+				{ ContentType.XProtobuf, new ProtobufSerializer() },
+			};
 		}
 
 		public static void SetMappings(IDictionary<string, ISerializer> mappings)
 		{
-			_maps = mappings ?? throw new ArgumentNullException(nameof(mappings));
+			if(mappings == null)
+			{
+				throw new ArgumentNullException(nameof(mappings));
+			}
+			_maps = new Lazy<IDictionary<string, ISerializer>>(() => mappings);
 		}
 
 		public static ISerializer GetSerializerFor(string contentType)
 		{
-			if (!_maps.ContainsKey(contentType))
+			if (!Maps.ContainsKey(contentType))
 			{
 				return null;
 			}
-			return _maps[contentType];
+			return Maps[contentType];
 		}
 	}
 }
