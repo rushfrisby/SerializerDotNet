@@ -34,7 +34,7 @@ namespace SerializerDotNet
 
 		public byte[] Serialize<T>(T instance)
 		{
-			return Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(instance));
+			return Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(instance, _settings));
 		}
 
 		public async Task<byte[]> SerializeAsync<T>(T instance)
@@ -46,7 +46,7 @@ namespace SerializerDotNet
 		{
 			using (var r = new StreamReader(source, Encoding.UTF8))
 			{
-				return JsonConvert.DeserializeObject<T>(r.ReadToEnd());
+				return JsonConvert.DeserializeObject<T>(r.ReadToEnd(), _settings);
 			}
 		}
 
