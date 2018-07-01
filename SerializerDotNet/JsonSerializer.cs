@@ -7,6 +7,18 @@ namespace SerializerDotNet
 {
 	public class JsonSerializer : ISerializer
 	{
+		private readonly JsonSerializerSettings _settings;
+
+		public JsonSerializer(JsonSerializerSettings settings = null)
+		{
+			_settings = settings ?? new JsonSerializerSettings
+			{
+				Formatting = Formatting.None,
+				ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+				PreserveReferencesHandling = PreserveReferencesHandling.Objects
+			};
+		}
+
 		public string DefaultContentType { get { return ContentType.Json; } }
 
 		public void Serialize<T>(T instance, Stream destination)
