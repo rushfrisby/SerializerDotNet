@@ -1,26 +1,35 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace SerializerDotNet
 {
-	public interface ISerializer
-	{
-		string DefaultContentType { get; }
+    public interface ISerializer
+    {
+        string DefaultContentType { get; }
 
-		void Serialize<T>(T instance, Stream destination);
+        void Serialize<T>(T instance, Stream destination);
 
-		Task SerializeAsync<T>(T instance, Stream destination);
+        byte[] Serialize<T>(T instance);
 
-		byte[] Serialize<T>(T instance);
+        Task SerializeAsync<T>(T instance, Stream destination);
 
-		Task<byte[]> SerializeAsync<T>(T instance);
+        Task<byte[]> SerializeAsync<T>(T instance);
 
-		T Deserialize<T>(Stream source);
+        T Deserialize<T>(Stream source);
 
-		Task<T> DeserializeAsync<T>(Stream source);
+        object Deserialize(Stream source, Type type);
 
-		T Deserialize<T>(byte[] source);
+        T Deserialize<T>(byte[] source);
 
-		Task<T> DeserializeAsync<T>(byte[] source);
-	}
+        object Deserialize(byte[] source, Type type);
+
+        Task<T> DeserializeAsync<T>(byte[] source);
+
+        Task<object> DeserializeAsync(byte[] source, Type type);
+
+        Task<T> DeserializeAsync<T>(Stream source);
+
+        Task<object> DeserializeAsync(Stream source, Type type);
+    }
 }
