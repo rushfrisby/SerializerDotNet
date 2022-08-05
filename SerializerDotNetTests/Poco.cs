@@ -3,18 +3,12 @@
 namespace SerializerDotNetTests
 {
     [DataContract]
-    public class Poco
+    public record Poco()
     {
-        public Poco()
-        {
-            Id = int.MaxValue;
-            Name = "I'm in love with the POCO";
-        }
-
         [DataMember(Order = 1)]
-        public int Id { get; set; }
+        public int Id { get; set; } = int.MaxValue;
 
         [DataMember(Order = 2)]
-        public string Name { get; set; }
+        public string Name { get; set; } = "I'm in love with the POCO";
     }
 }
