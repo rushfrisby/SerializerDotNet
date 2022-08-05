@@ -13,7 +13,7 @@ namespace SerializerDotNet
         {
             return new Dictionary<string, ISerializer>()
             {
-                { ContentType.Json, new JsonSerializer() },
+                { ContentType.Json, new SystemTextJsonSerializer() },
                 { ContentType.Protobuf, new ProtobufSerializer() },
                 { ContentType.XProtobuf, new ProtobufSerializer() },
             };

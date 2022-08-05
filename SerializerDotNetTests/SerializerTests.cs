@@ -26,7 +26,7 @@ namespace SerializerDotNetTests
             var serializer = Serializer.GetSerializerFor(ContentType.Json);
 
             Assert.NotNull(serializer);
-            Assert.IsType<JsonSerializer>(serializer);
+            Assert.IsType<SystemTextJsonSerializer>(serializer);
         }
 
         [Fact]
